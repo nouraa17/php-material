@@ -15,7 +15,12 @@ $data = get_users();
 $employee_access = ['name','email','phone','type'];
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
-    $data = get_users('WHERE type="'.$_POST['type'].'"');
+    $filter = 'where 1 = 1';
+    if ($_POST['type'] != '') {
+        $filter = $filter.' and '.'type="'.$_POST['type'].'"';
+    }
+    // vardump($filter)
+    $data = get_users($filter);
 }
 
 $title = 'Home';
