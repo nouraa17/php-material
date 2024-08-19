@@ -1,23 +1,40 @@
 <?php
-include_once 'helpers/validate.php';
+session_start();
+// include_once 'helpers/validate.php';
 // $conn=connectToDB();
 // phpinfo();
 
+include_once 'guard/check_user_login.php';
+check_login();
+// var_dump($_SESSION);
+
+
+
 include_once 'models/usersModel.php';
 $data = get_users();
-$employee_access = ['username','email','phone','type'];
+$employee_access = ['name','email','phone','type'];
 
+if($_SERVER['REQUEST_METHOD']=='POST'){
+    $data = get_users('WHERE type="'.$_POST['type'].'"');
+}
+
+$title = 'Home';
+include_once 'template/header.php';
 ?>
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
-<body>
     <div class="container">
+
+        <form method="POST" class="m-auto pt-5">
+            <div class="row">
+                <select name="type" id="" class="col-3">
+                    <option value="">All</option>
+                    <option value="client">Client</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-outline-success mb-3 col-3">
+                    Submit
+                </button>
+            </div>
+        </form>
         <br>
         <?php //include_once 'layout/form.php' ?>
         <br>
@@ -47,5 +64,7 @@ $employee_access = ['username','email','phone','type'];
             echo '<p class="alert alert-danger text-center m-3">There is no data</p>';
             }?> 
     </div>
-</body>
-</html>
+
+<?php
+include_once 'template/footer.php';
+?>
