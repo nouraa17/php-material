@@ -11,9 +11,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $_SESSION['id'] = $data_check['id'];
         $_SESSION['email'] = $data_check['email'];
         $_SESSION['name'] = $data_check['name'];
-        header('location:index.php');
+        $_SESSION['type'] = $data_check['type'];
+        // $check = check_admin_login();
+        if($data_check['type']=='admin'){
+            header('location:messages.php');
+        }
+        else{
+            $data_check = "Not Allowed";
+        }
+        // header('location:index.php');
     }
 }
+
+
 
 
 
@@ -29,6 +39,9 @@ include_once 'template/header.php';
         if(isset($data_check)){
             if($data_check == false){
                 echo '<div class="alert alert-danger text-center">Email or Password is incorrect</div>';
+            }
+            else{
+                echo '<div class="alert alert-danger text-center">'.$data_check.'</div>';
             }
         }
         ?>
